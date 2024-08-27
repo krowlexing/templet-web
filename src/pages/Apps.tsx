@@ -7,6 +7,8 @@ import { sampleApps } from "../sample/apps";
 import { noop, useModal } from "../utils";
 import { CreateApp } from "../components/CreateApp";
 import { useNavigate } from "react-router";
+import { network } from "../main";
+import { useEffect, useState } from "react";
 
 interface Props {
     onClick?: () => void;
@@ -18,6 +20,12 @@ export function Apps(props: Props) {
         <CreateApp onSubmit={() => nav("1/info")} onCancel={close} />
     ));
     const { onClick } = props;
+
+    const [content, setContent] = useState("");
+
+    useEffect(() => {
+        network.test().then(setContent);
+    }, []);
 
     const apps = sampleApps.map((app, i) => (
         <ApplicationCard id={i + ""} {...app} onClick={onClick ?? noop} />

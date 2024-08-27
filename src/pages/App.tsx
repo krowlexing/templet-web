@@ -16,8 +16,15 @@ interface Props {
 }
 
 export function App(props: Props) {
-    const { owner, id, title, description, weblink, isPublic, stopped } =
-        props.data;
+    const {
+        owner,
+        id,
+        title,
+        description,
+        weblink,
+        public: isPublic,
+        stopped,
+    } = props.data;
 
     return (
         <>

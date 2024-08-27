@@ -9,14 +9,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { type State, initialState } from "./state";
 import { NodeData } from "../data/node";
 import { thunk } from "redux-thunk";
+import { autoTrack } from "../network-helper-lib/tracker";
+import { appsThunks } from "./requests/apps";
 
 const slice = createSlice({
     initialState,
     name: "general",
-    reducers: {
-        addNode(state, action: PayloadAction<NodeData>) {
-            state.nodes.push(action.payload);
-        },
+    reducers: {},
+    extraReducers: builder => {
+        autoTrack(builder, appsThunks);
     },
 });
 

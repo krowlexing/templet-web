@@ -7,8 +7,11 @@ import { sampleApps } from "../sample/apps";
 import { noop, useModal } from "../utils";
 import { CreateApp } from "../components/CreateApp";
 import { useNavigate } from "react-router";
-import { network } from "../main";
+
 import { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../store";
+import { network } from "../network/network";
+import { appsThunks } from "../store/requests/apps";
 
 interface Props {
     onClick?: () => void;
@@ -17,18 +20,33 @@ interface Props {
 export function Apps(props: Props) {
     const nav = useNavigate();
     const [modal, open, close] = useModal((open, close) => (
-        <CreateApp onSubmit={() => nav("1/info")} onCancel={close} />
+        <CreateApp
+            onSubmit={formData => {
+                dispatch(
+                    appsThunks.create({
+                        ...formData,
+                        version: "",
+                        status: formData.stopped ? 2 : 0,
+                    })
+                );
+                dispatch(appsThunks.allApps(0));
+            }}
+            onCancel={close}
+        />
     ));
     const { onClick } = props;
 
-    const [content, setContent] = useState("");
+    const dispatch = useAppDispatch();
+    const { value: appObjs, status } = useAppSelector(
+        state => state.requests.allApps
+    );
 
     useEffect(() => {
-        network.test().then(setContent);
-    }, []);
+        dispatch(appsThunks.allApps(0));
+    }, [dispatch]);
 
-    const apps = sampleApps.map((app, i) => (
-        <ApplicationCard id={i + ""} {...app} onClick={onClick ?? noop} />
+    const apps = appObjs?.map((app, i) => (
+        <ApplicationCard {...app} onClick={onClick ?? noop} />
     ));
     return (
         <>

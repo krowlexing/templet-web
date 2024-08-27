@@ -7,6 +7,8 @@ import {
     TextField,
     TextFieldProps,
 } from "@mui/material";
+import { forwardRef } from "react";
+import { ReactRef } from "../pages/Registration";
 
 export const colors = {
     primary: "#3F51B5",
@@ -21,9 +23,9 @@ export const Header = styled.div({
     fontFamily: "inter",
 });
 
-const CustomTextField = (props: TextFieldProps) => (
-    <TextField sx={{ width: "100%" }} size="small" {...props} />
-);
+const CustomTextField = forwardRef((props: TextFieldProps, ref: ReactRef) => (
+    <TextField sx={{ width: "100%" }} size="small" {...props} inputRef={ref} />
+));
 
 const CustomButton = (props: ButtonProps) => (
     <Button size="small" variant="contained" {...props} />

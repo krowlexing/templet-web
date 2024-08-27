@@ -9,9 +9,14 @@ import {
 import styled from "@emotion/styled";
 import { noop } from "../utils";
 import { useForm } from "react-hook-form";
-import { register as registerRequest, login, Network } from "../store/network";
+import {
+    register as registerRequest,
+    login,
+    Network,
+    network,
+} from "../network/network";
 import { ForwardedRef, forwardRef, Ref } from "react";
-import { network } from "../main";
+
 import { useNavigate } from "react-router";
 
 interface RegistrationForm {
@@ -31,10 +36,9 @@ export function Registration(props: Props) {
     const { register, handleSubmit } = useForm<RegistrationForm>();
 
     const onSubmit = (form: RegistrationForm) => {
-        alert(JSON.stringify(form));
         const { name, username, password } = form;
         network
-            .register(name, username, password)
+            .register({ name, username, password })
             .catch(e => console.log(e))
             .then(() => navigate("../apps"));
     };

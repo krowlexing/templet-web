@@ -7,5 +7,5 @@ export const sampleApp: AppData = {
     description: "super description",
     stopped: false,
     weblink: "krowlexing.fun",
-    isPublic: false,
+    public: false,
 };

@@ -1,9 +1,13 @@
+import { AppData } from "../data/app";
 import { NodeData } from "../data/node";
+import { Requests, requestsInitialState } from "./requests";
 
 export type State = {
-    nodes: NodeData[];
+    apps: AppData[];
+    requests: Requests;
 };
 
 export const initialState: State = {
-    nodes: [],
+    apps: [],
+    requests: requestsInitialState,
 };

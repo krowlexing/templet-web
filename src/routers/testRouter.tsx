@@ -18,7 +18,7 @@ const TestRegistration = () => {
 
 const TestApps = () => {
     const nav = useNavigate();
-    return <Apps onClick={() => nav("1/info")} />;
+    return <Apps onClick={id => nav(id + "/info")} />;
 };
 
 const TestApp = () => {
@@ -57,12 +57,12 @@ export const testRoutes: RouteObject[] = [
                 element: <TestApps />,
             },
             {
-                path: "1",
+                path: ":id",
                 children: [
                     {
                         path: "info",
 
-                        element: <AppInfo app={sampleApp} />,
+                        element: <AppInfo />,
                     },
                     {
                         path: "operators",

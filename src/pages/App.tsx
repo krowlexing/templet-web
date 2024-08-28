@@ -17,7 +17,7 @@ interface Props {
 
 export function App(props: Props) {
     const {
-        owner,
+        author: owner,
         id,
         title,
         description,

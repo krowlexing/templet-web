@@ -5,4 +5,5 @@ export const [appsThunks, appsInitialState] = produceRequests({
     allApps: network.apps.all,
     create: network.apps.create,
     search: network.apps.search,
+    appInfo: network.apps.info,
 });

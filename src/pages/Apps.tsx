@@ -14,7 +14,7 @@ import { network } from "../network/network";
 import { appsThunks } from "../store/requests/apps";
 
 interface Props {
-    onClick?: () => void;
+    onClick?: (id: number) => void;
 }
 
 export function Apps(props: Props) {

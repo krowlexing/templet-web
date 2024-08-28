@@ -3,11 +3,11 @@ import { noop } from "../utils";
 import { Header, Text } from "./styles";
 
 interface Props {
-    id: string;
+    id: number;
     title: string;
     description: string;
 
-    onClick?: (id: string) => void;
+    onClick?: (id: number) => void;
 }
 
 export function ApplicationCard(props: Props) {

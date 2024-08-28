@@ -7,13 +7,40 @@ import { Button, Paper } from "@mui/material";
 import { Header1 } from "../components/styles";
 import { AppData } from "../data/app";
 import { App } from "./App";
+import { useParams } from "react-router";
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../store";
+import { appsThunks } from "../store/requests/apps";
 
 type Props = {
-    app: AppData;
+    x?: boolean;
 };
 
 export function AppInfo(props: Props) {
-    const { title } = props.app;
+    const { id } = useParams<{ id: string }>();
+
+    const dispath = useAppDispatch();
+    const appInfo = useAppSelector(state => state.requests.appInfo);
+
+    useEffect(() => {
+        if (id) {
+            dispath(appsThunks.appInfo(+id));
+        }
+    }, [dispath, id]);
+
+    if (appInfo.status != "fulfilled") {
+        return <div>:(</div>;
+    }
+
+    // console.dir(appInfo.value);
+    // if (id && appInfo.value.id !== +id) {
+    //     console.log(`
+    //         expected id: ${+id}
+    //         actual id: ${appInfo.value?.id}
+    //         `);
+    //     return null;
+    // }
+
     return (
         <Skeleton
             sidemenu={
@@ -21,7 +48,7 @@ export function AppInfo(props: Props) {
             }
             main={
                 <Paper sx={{ padding: 2 }}>
-                    <App data={props.app} />
+                    <App data={appInfo.value} />
                 </Paper>
             }
         />

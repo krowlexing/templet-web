@@ -2,8 +2,10 @@ import { Add } from "@mui/icons-material";
 import { Autocomplete, IconButton, TextField } from "@mui/material";
 import { colors } from "../styles";
 import { useRef, useState } from "react";
+import { useAppDispatch } from "../../store";
 
 export function OperatorForm() {
+    const dispatch = useAppDispatch();
     const [hints, performSearch, cancel] = useCancellable(
         search,
         [] as string[]
@@ -78,6 +80,26 @@ function search(query: string): [Promise<string[]>, () => void] {
     ];
 }
 
+function cancelable<T>(func: () => T): [Promise<T>, () => void] {
+    let cancelled = false;
+    let rejection: () => void;
+    return [
+        new Promise((resolve, reject) => {
+            if (cancelled) {
+                reject("cancelled");
+            }
+            const id = setTimeout(() => resolve(func()), 1000);
+            rejection = () => {
+                clearTimeout(id);
+                reject("cancelled");
+            };
+        }),
+        () => {
+            cancelled = true;
+            rejection && rejection();
+        },
+    ];
+}
 // function cancelable();
 
 // function perform(q: string) {

@@ -6,6 +6,7 @@ export class AppsRequests extends AbstractSubNetwork {
     all = () => allApps(this.axios());
     create = (app: NewApp) => create(this.axios(), app);
     search = (title: string) => search(this.axios(), title);
+    info = (id: number) => info(this.axios(), id);
 }
 
 function allApps(axios: AxiosInstance) {
@@ -21,3 +22,6 @@ const search = (axios: AxiosInstance, title: string) =>
             q: title,
         },
     });
+
+const info = (axios: AxiosInstance, id: number) =>
+    axios.get<AppData>(`/api/apps/${id}/info`);

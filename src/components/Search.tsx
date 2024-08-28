@@ -3,17 +3,18 @@ import { Autocomplete, IconButton, TextField } from "@mui/material";
 import { colors } from "./styles";
 import { useRef, useState } from "react";
 import { useCancellable } from "../utils/hooks";
+import { useAppSelector } from "../store";
 interface Props {
-    search: (query: string) => [Promise<string[]>, () => void];
+    search: (query: string) => [Promise<void>, () => void];
     placeholder?: string;
     button?: JSX.Element;
 }
 
 export function Search(props: Props) {
-    const [hints, performSearch, cancel] = useCancellable(
-        props.search,
-        [] as string[]
-    );
+    const [_, performSearch, cancel] = useCancellable(props.search, null);
+
+    const search = useAppSelector(state => state.requests.search);
+    const hints = search.value?.map(app => app.title) ?? [];
     return (
         <div
             style={{

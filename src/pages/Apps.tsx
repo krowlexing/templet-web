@@ -34,12 +34,14 @@ export function Apps(props: Props) {
             onCancel={close}
         />
     ));
+
     const { onClick } = props;
 
     const dispatch = useAppDispatch();
     const { value: appObjs, status } = useAppSelector(
         state => state.requests.allApps
     );
+    const search = useAppSelector(state => state.requests.search);
 
     useEffect(() => {
         dispatch(appsThunks.allApps(0));
@@ -52,7 +54,9 @@ export function Apps(props: Props) {
         <>
             <TempletHeader button={<Button onClick={open}>New app</Button>} />
             <Search
-                search={search}
+                search={query =>
+                    performSearch(() => dispatch(appsThunks.search(query)))
+                }
                 placeholder="Search apps..."
                 button={
                     <ContainedIconButton
@@ -75,7 +79,7 @@ const searchResults = [
     "Third app - It's the best",
 ];
 
-function search(query: string): [Promise<string[]>, () => void] {
+function searchDemo(query: string): [Promise<string[]>, () => void] {
     let cancelled = false;
     let rejection: () => void;
     return [
@@ -87,6 +91,27 @@ function search(query: string): [Promise<string[]>, () => void] {
                 () => resolve(searchResults.filter(x => x.startsWith(query))),
                 1000
             );
+            rejection = () => {
+                clearTimeout(id);
+                reject("cancelled");
+            };
+        }),
+        () => {
+            cancelled = true;
+            rejection && rejection();
+        },
+    ];
+}
+
+function performSearch(submitSearch: () => void): [Promise<void>, () => void] {
+    let cancelled = false;
+    let rejection: () => void;
+    return [
+        new Promise((resolve, reject) => {
+            if (cancelled) {
+                reject("cancelled");
+            }
+            const id = setTimeout(() => resolve(submitSearch()), 1000);
             rejection = () => {
                 clearTimeout(id);
                 reject("cancelled");

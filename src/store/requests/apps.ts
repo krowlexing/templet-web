@@ -4,4 +4,5 @@ import { network } from "../../network/network";
 export const [appsThunks, appsInitialState] = produceRequests({
     allApps: network.apps.all,
     create: network.apps.create,
+    search: network.apps.search,
 });

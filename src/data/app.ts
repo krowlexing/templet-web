@@ -1,6 +1,6 @@
 export type AppData = {
     id: number;
-    author: string;
+    author_id: number;
     title: string;
     description: string;
     weblink: string;

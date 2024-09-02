@@ -13,7 +13,7 @@ interface Props {
 export function Search(props: Props) {
     const [_, performSearch, cancel] = useCancellable(props.search, null);
 
-    const search = useAppSelector(state => state.requests.search);
+    const search = useAppSelector(state => state.apps.search);
     const hints = search.value?.map(app => app.title) ?? [];
     return (
         <div

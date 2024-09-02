@@ -1,14 +1,22 @@
 import axios, { AxiosInstance } from "axios";
 import { AbstractNetwork } from "../network-helper-lib/AbstractNetwork";
 import { AppsRequests } from "./apps";
+import { OperatorsRequests } from "./operators";
+import { actions, store } from "../store";
+import { UsersNetwork } from "./users";
 
 export class Network extends AbstractNetwork {
     apps: AppsRequests = new AppsRequests(this);
+    operators: OperatorsRequests = new OperatorsRequests(this);
+    users: UsersNetwork = new UsersNetwork(this);
+
+    logged: boolean = false;
 
     constructor() {
         super();
         const token = localStorage.getItem("token");
         if (token != null) {
+            this.logged = true;
             this.instance = axios.create({
                 baseURL: location.origin,
                 headers: {
@@ -23,6 +31,8 @@ export class Network extends AbstractNetwork {
     }
 
     setToken = (token: string) => {
+        this.logged = true;
+        store.dispatch(actions.loggedIn());
         localStorage.setItem("token", token);
         this.instance = axios.create({
             baseURL: location.origin,

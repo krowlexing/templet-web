@@ -68,11 +68,9 @@ export function trackRequest<
     RequestError,
     X extends AsyncThunkConfig,
     State extends {
-        requests: {
-            [K in SpecialKey]: RequestState<ReturnValue, RequestError>;
-        };
+        [K in SpecialKey]: RequestState<ReturnValue, RequestError>;
     },
-    SpecialKey extends keyof State["requests"] & string,
+    SpecialKey extends keyof State & string,
     ThunkArg
 >(
     builder: ActionReducerMapBuilder<State>,
@@ -85,18 +83,18 @@ export function trackRequest<
     builder.addCase(thunker.fulfilled, (_state, action) => {
         const state = _state as State;
 
-        state.requests[stateParameter].status = "fulfilled";
-        state.requests[stateParameter].value = action.payload;
+        state[stateParameter].status = "fulfilled";
+        state[stateParameter].value = action.payload;
 
         helper?.fulfill(state as State, action);
     });
     builder.addCase(thunker.rejected, _state => {
         const state = _state as State;
-        state.requests[stateParameter].status = "error";
+        state[stateParameter].status = "error";
     });
     builder.addCase(thunker.pending, _state => {
         const state = _state as State;
-        state.requests[stateParameter].status = "pending";
+        state[stateParameter].status = "pending";
     });
 }
 

@@ -2,12 +2,32 @@ import { SideMenu } from "../components/Menu/SideMenu";
 import { Skeleton } from "../components/Skeleton";
 import { menu, templetMenu } from "../data/menu";
 import { Operators as OperatorList } from "../components/Operators/Operators";
-import { sampleOperators } from "../sample/operators";
 import { Divider, Paper } from "@mui/material";
 import { Button, Header1 } from "../components/styles";
 import { OperatorForm } from "../components/Operators/OperatorForm";
+import { thunks, useAppDispatch, useAppSelector } from "../store";
+import { useEffect } from "react";
+import { useParams } from "react-router";
+import { network } from "../network/network";
+import { Operator as OperatorData } from "../data/operator";
 
 export function Operators() {
+    const operatorsRequest = useAppSelector(state => state.operators.all);
+    const dispatch = useAppDispatch();
+
+    const appId = +useParams<{ appId: string }>().appId!;
+    useEffect(() => {
+        dispatch(thunks.operators.all(appId));
+    }, [dispatch, appId]);
+
+    const requestDelete = (operator: OperatorData) =>
+        network.operators
+            .delete({ appId, operatorId: operator.id })
+            .then(() => dispatch(thunks.operators.all(appId)));
+
+    if (operatorsRequest.status != "fulfilled") {
+        return <div>:(</div>;
+    }
     return (
         <Skeleton
             sidemenu={
@@ -30,7 +50,10 @@ export function Operators() {
                     </div>
 
                     <Divider sx={{ margin: 1 }} />
-                    <OperatorList operators={sampleOperators} />
+                    <OperatorList
+                        operators={operatorsRequest.value}
+                        onDelete={requestDelete}
+                    />
                 </Paper>
             }
         />

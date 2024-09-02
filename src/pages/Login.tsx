@@ -9,30 +9,28 @@ import {
 import styled from "@emotion/styled";
 import { useForm } from "react-hook-form";
 import { network } from "../network/network";
-import { ForwardedRef, forwardRef } from "react";
+import { ForwardedRef, forwardRef, useCallback } from "react";
 
 import { useNavigate } from "react-router";
 
-interface RegistrationForm {
-    name: string;
+interface LoginForm {
     username: string;
     password: string;
-    passwordRepeat: string;
 }
 
 interface Props {
     onCreateAccount?: () => void;
 }
 
-export function Registration(props: Props) {
+export function Login(props: Props) {
     const { onCreateAccount } = props;
     const navigate = useNavigate();
-    const { register, handleSubmit } = useForm<RegistrationForm>();
+    const { register, handleSubmit } = useForm<LoginForm>();
 
-    const onSubmit = (form: RegistrationForm) => {
-        const { name, username, password } = form;
+    const onSubmit = (form: LoginForm) => {
+        const { username, password } = form;
         network
-            .register({ name, username, password })
+            .login({ username, password })
             .then(data => {
                 network.setToken(data.data);
                 navigate("../apps");
@@ -40,8 +38,10 @@ export function Registration(props: Props) {
             .catch(e => console.log(e));
     };
 
-    const goToLogin = () => navigate("../login");
-    // console.dir(reg);
+    const goToRegister = useCallback(() => {
+        navigate("../auth");
+    }, [navigate]);
+
     return (
         <Fullscreen>
             <Centered>
@@ -63,11 +63,6 @@ export function Registration(props: Props) {
                         </Typography>
                         <InputContainer>
                             <CustomTextField
-                                {...register("name")}
-                                label="Имя"
-                            />
-
-                            <CustomTextField
                                 {...register("username")}
                                 label="username"
                             />
@@ -75,18 +70,14 @@ export function Registration(props: Props) {
                                 {...register("password")}
                                 label="пароль"
                             />
-                            <CustomTextField
-                                {...register("passwordRepeat")}
-                                label="пароль еще раз"
-                            />
                         </InputContainer>
 
                         <Button variant="contained" type="submit">
-                            Создать аккаунт
+                            Войти
                         </Button>
 
-                        <Button type="button" onClick={goToLogin}>
-                            Уже есть аккаунт?
+                        <Button type="button" onClick={goToRegister}>
+                            Еще нет аккаунта?
                         </Button>
                     </form>
                 </Paper>

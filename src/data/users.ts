@@ -1,5 +1,5 @@
 export type AppUser = {
-    userId: string;
+    id: number;
+    name: string;
     username: string;
-    // suspended: boolean;
 };

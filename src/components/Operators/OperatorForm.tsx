@@ -2,14 +2,32 @@ import { Add } from "@mui/icons-material";
 import { Autocomplete, IconButton, TextField } from "@mui/material";
 import { colors } from "../styles";
 import { useRef, useState } from "react";
-import { useAppDispatch } from "../../store";
+import { thunks, useAppDispatch, useAppSelector } from "../../store";
+import { Search } from "../Search";
+import { performSearch } from "../../pages/Apps";
+import { useDispatch } from "react-redux";
+import { AppUser } from "../../data/users";
+import { network } from "../../network/network";
+import { useParams } from "react-router";
+
+interface Props {
+    search: (query: string) => [Promise<void>, () => void];
+    placeholder?: string;
+    button?: JSX.Element;
+}
 
 export function OperatorForm() {
     const dispatch = useAppDispatch();
-    const [hints, performSearch, cancel] = useCancellable(
-        search,
-        [] as string[]
+    const [selectedUser, setSelectedUser] = useState(-1);
+    const appId = +useParams<{ appId: string }>().appId!;
+
+    const [_, performSearc, cancel] = useCancellable(
+        q => performSearch(() => dispatch(thunks.users.search(q))),
+        null
     );
+
+    const search = useAppSelector(state => state.users.search);
+    const hints = search.value ?? [];
     return (
         <div
             style={{
@@ -19,25 +37,45 @@ export function OperatorForm() {
                 padding: 3,
             }}
         >
+            <div>selected user: {selectedUser}</div>
             <Autocomplete
                 sx={{ marginRight: 1, width: "100%" }}
                 disablePortal
                 freeSolo
                 filterOptions={x => x}
                 options={hints}
+                getOptionKey={user => (typeof user === "string" ? -1 : user.id)}
+                getOptionLabel={user =>
+                    typeof user === "string" ? user : user.username
+                }
+                onChange={(event, value, reason, details) => {
+                    if (reason === "selectOption") {
+                        if (value == null || typeof value == "string") {
+                            setSelectedUser(-1);
+                        } else {
+                            setSelectedUser(value.id);
+                        }
+                    } else {
+                        setSelectedUser(-1);
+                    }
+                }}
+                onInputChange={() => {
+                    setSelectedUser(-1);
+                }}
                 onInput={t => {
                     const target = t.target as HTMLInputElement;
-                    performSearch(target.value);
+                    performSearc(target.value);
                 }}
                 renderInput={params => (
                     <TextField
                         {...params}
                         sx={{ marginRight: 1, width: "100%" }}
                         size="small"
-                        placeholder="Username"
+                        placeholder={"username"}
                     />
                 )}
             />
+
             <IconButton
                 sx={{
                     backgroundColor: colors.primary,
@@ -46,6 +84,18 @@ export function OperatorForm() {
                     ":hover": {
                         backgroundColor: colors.accent,
                     },
+                }}
+                onClick={() => {
+                    if (selectedUser != -1) {
+                        network.operators
+                            .create({
+                                appId,
+                                userId: selectedUser,
+                            })
+                            .then(() => {
+                                dispatch(thunks.operators.all(appId));
+                            });
+                    }
                 }}
             >
                 <Add />

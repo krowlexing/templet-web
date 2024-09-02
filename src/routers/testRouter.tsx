@@ -10,6 +10,9 @@ import { Operators } from "../pages/Operators";
 import { Brokers } from "../pages/Brokers";
 import { AppInfo } from "../pages/AppInfo";
 import { Users } from "../pages/Users";
+import { Login } from "../pages/Login";
+import { RequireAuth } from "../utils/hooks";
+import { PublicAppInfo } from "../pages/PublicAppInfo";
 
 const TestRegistration = () => {
     const nav = useNavigate();
@@ -18,7 +21,7 @@ const TestRegistration = () => {
 
 const TestApps = () => {
     const nav = useNavigate();
-    return <Apps onClick={id => nav(id + "/info")} />;
+    return <Apps onClick={id => nav(id + "")} />;
 };
 
 const TestApp = () => {
@@ -48,6 +51,10 @@ export const testRoutes: RouteObject[] = [
         path: "auth",
         element: <TestRegistration />,
     },
+    {
+        path: "login",
+        element: <Login />,
+    },
 
     {
         path: "apps",
@@ -57,12 +64,15 @@ export const testRoutes: RouteObject[] = [
                 element: <TestApps />,
             },
             {
-                path: ":id",
+                path: ":appId",
                 children: [
                     {
+                        path: "",
+                        element: <PublicAppInfo />,
+                    },
+                    {
                         path: "info",
-
-                        element: <AppInfo />,
+                        element: <RequireAuth element={<AppInfo />} />,
                     },
                     {
                         path: "operators",

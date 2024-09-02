@@ -1,8 +1,8 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { AxiosResponse } from "axios";
 import { unsafeStringKeys } from "../utils";
 
-import { empty, RequestNone } from "./tracker";
+import { autoTrack, ConvertRequests, empty, RequestNone } from "./tracker";
 import { network } from "../network/network";
 
 export function wrapNetwork<T extends string, Value, Arg>(
@@ -30,8 +30,8 @@ export type NetworkThunks<D extends NetworkDescription> = {
     [K in keyof D]: K extends string
         ? D[K] extends NetworkItem<infer V, infer A>
             ? ReturnType<typeof wrapNetwork<K, V, A>>
-            : undefined
-        : undefined;
+            : never
+        : never;
 };
 
 export function fromDescription<Description extends NetworkDescription>(
@@ -80,17 +80,19 @@ export function produceRequests<D extends NetworkDescription>(
     ];
 }
 
-const description = {
-    register: data =>
-        network.register(data).then(response => {
-            network.setToken(response.data);
-            return response;
+export function sliceFromDescription<
+    N extends string,
+    D extends NetworkDescription
+>(namespace: N, description: D) {
+    const [thunks, b] = produceRequests(description);
+    const initialState = b as ConvertRequests<typeof b>;
+    return [
+        createSlice({
+            name: namespace,
+            reducers: {},
+            initialState: initialState,
+            extraReducers: builder => autoTrack(builder, thunks),
         }),
-    login: data =>
-        network.login(data).then(response => {
-            network.setToken(response.data);
-            return response;
-        }),
-} satisfies NetworkDescription;
-
-export const authThunks = fromDescription(description);
+        thunks,
+    ] as const;
+}

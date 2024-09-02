@@ -1,4 +1,7 @@
 export type Operator = {
-    userId: string;
+    id: number;
+    appId: number;
+    userId: number;
+    name: string;
     username: string;
 };

@@ -39,9 +39,9 @@ export function Apps(props: Props) {
 
     const dispatch = useAppDispatch();
     const { value: appObjs, status } = useAppSelector(
-        state => state.requests.allApps
+        state => state.apps.allApps
     );
-    const search = useAppSelector(state => state.requests.search);
+    const search = useAppSelector(state => state.apps.search);
 
     useEffect(() => {
         dispatch(appsThunks.allApps(0));
@@ -103,7 +103,9 @@ function searchDemo(query: string): [Promise<string[]>, () => void] {
     ];
 }
 
-function performSearch(submitSearch: () => void): [Promise<void>, () => void] {
+export function performSearch(
+    submitSearch: () => void
+): [Promise<void>, () => void] {
     let cancelled = false;
     let rejection: () => void;
     return [

@@ -9,24 +9,23 @@ import { AppData } from "../data/app";
 import { App } from "./App";
 import { useParams } from "react-router";
 import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../store";
-import { appsThunks } from "../store/requests/apps";
+import { thunks, useAppDispatch, useAppSelector } from "../store";
 
 type Props = {
     x?: boolean;
 };
 
 export function AppInfo(props: Props) {
-    const { id } = useParams<{ id: string }>();
+    const { appId } = useParams<{ appId: string }>();
 
     const dispath = useAppDispatch();
-    const appInfo = useAppSelector(state => state.requests.appInfo);
+    const appInfo = useAppSelector(state => state.apps.appInfo);
 
     useEffect(() => {
-        if (id) {
-            dispath(appsThunks.appInfo(+id));
+        if (appId) {
+            dispath(thunks.apps.appInfo(+appId));
         }
-    }, [dispath, id]);
+    }, [dispath, appId]);
 
     if (appInfo.status != "fulfilled") {
         return <div>:(</div>;

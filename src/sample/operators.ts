@@ -2,15 +2,24 @@ import { Operator } from "../data/operator";
 
 export const sampleOperators: Operator[] = [
     {
-        userId: "krowlexing",
-        username: "Салават Нурсафин",
+        username: "krowlexing",
+        name: "Салават Нурсафин",
+        id: 3,
+        appId: 0,
+        userId: 0,
     },
     {
-        userId: "alex_revva",
-        username: "Геральт из Ривии",
+        username: "alex_revva",
+        name: "Геральт из Ривии",
+        id: 2,
+        appId: 0,
+        userId: 0,
     },
     {
-        userId: "avalentin",
-        username: "Валентин Артемов",
+        username: "avalentin",
+        name: "Валентин Артемов",
+        id: 1,
+        appId: 0,
+        userId: 0,
     },
 ];

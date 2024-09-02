@@ -1,5 +1,9 @@
 import { Paper } from "@mui/material";
 import { useRef, useState } from "react";
+import { network } from "../network/network";
+import { useAppSelector } from "../store";
+
+import { Navigate } from "react-router-dom";
 
 export function useModal(
     component: (open: () => void, close: () => void) => JSX.Element
@@ -64,4 +68,14 @@ export function useCancellable<T, A extends any[]>(
         },
         cancelation.current,
     ] as const;
+}
+
+type Props = {
+    element: JSX.Element;
+};
+
+export function RequireAuth(props: Props) {
+    const loggedIn = useAppSelector(state => state.global.loggedIn);
+
+    return loggedIn ? props.element : <Navigate to={"/test/auth"} />;
 }

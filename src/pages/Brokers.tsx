@@ -7,13 +7,41 @@ import { Button, Paper } from "@mui/material";
 import { Header1 } from "../components/styles";
 import { BrokerList } from "../components/Brokers/BrokerList";
 import { sampleBrokers } from "../sample/brokers";
-import { BrokerForm } from "../components/Brokers/BrokerForm";
 import { useModal } from "../utils";
+import { useEffect, useState } from "react";
+import { Broker } from "../data/broker";
+import { network } from "../network/network";
+import { useParams } from "react-router-dom";
+import { BrokerForm } from "../components/Brokers/BrokerForm";
 
 export function Brokers() {
+    const [brokers, setBrokers] = useState<Broker[]>();
+    const appId = +useParams<{ appId: string }>().appId!;
+
+    const getBrokers = (appId: number) =>
+        network.brokers
+            .all(appId)
+            .then(res => res.data)
+            .then(setBrokers);
+
     const [newBrokerModal, open, close] = useModal((open, close) => (
-        <BrokerForm onCreate={close} onCancel={close} />
+        <BrokerForm
+            onCreate={broker => {
+                network.brokers
+                    .create(appId, broker)
+                    .then(() => getBrokers(appId));
+            }}
+            onCancel={close}
+        />
     ));
+
+    useEffect(() => {
+        getBrokers(appId);
+    }, [appId]);
+
+    if (brokers == undefined) {
+        return ":(";
+    }
 
     return (
         <Skeleton
@@ -34,7 +62,7 @@ export function Brokers() {
                             Добавить брокера
                         </Button>
                     </div>
-                    <BrokerList brokers={sampleBrokers} />
+                    <BrokerList brokers={brokers} />
                     {newBrokerModal}
                 </Paper>
             }

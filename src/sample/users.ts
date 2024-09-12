@@ -2,11 +2,13 @@ import { AppUser } from "../data/users";
 
 export const sampleUsers: AppUser[] = [
     {
-        userId: "krowlexing",
-        username: "Salavat Nursafin",
+        id: 0,
+        name: "Salavat Nursafin",
+        username: "krowlexing",
     },
     {
-        userId: "avalentin",
-        username: "Валентин Артемов",
+        id: 1,
+        name: "Валентин Артемов",
+        username: "avalentin",
     },
 ];

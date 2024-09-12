@@ -1,6 +1,5 @@
 import { Paper } from "@mui/material";
 import { useRef, useState } from "react";
-import { network } from "../network/network";
 import { useAppSelector } from "../store";
 
 import { Navigate } from "react-router-dom";
@@ -58,13 +57,11 @@ export function useCancellable<T, A extends any[]>(
             cancelation.current();
             const [promise, cancel] = request(...args);
             cancelation.current = cancel;
-            promise
-                .then(result => setResult(result))
-                .catch(e => {
-                    if (e != "cancelled") {
-                        throw e;
-                    }
-                });
+            promise.then(setResult).catch(e => {
+                if (e != "cancelled") {
+                    throw e;
+                }
+            });
         },
         cancelation.current,
     ] as const;

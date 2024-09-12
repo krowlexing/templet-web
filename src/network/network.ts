@@ -4,12 +4,13 @@ import { AppsRequests } from "./apps";
 import { OperatorsRequests } from "./operators";
 import { actions, store } from "../store";
 import { UsersNetwork } from "./users";
+import { AppUsersNetwork } from "./app_users";
 
 export class Network extends AbstractNetwork {
     apps: AppsRequests = new AppsRequests(this);
     operators: OperatorsRequests = new OperatorsRequests(this);
     users: UsersNetwork = new UsersNetwork(this);
-
+    appUsers = new AppUsersNetwork(this);
     logged: boolean = false;
 
     constructor() {

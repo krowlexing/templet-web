@@ -1,4 +1,4 @@
-import { NavLink, RouteObject, useNavigate } from "react-router-dom";
+import { Navigate, NavLink, RouteObject, useNavigate } from "react-router-dom";
 import { sampleNodes } from "../sample/nodes";
 import { Registration } from "../pages/Registration";
 import { Apps } from "../pages/Apps";
@@ -13,6 +13,7 @@ import { Login } from "../pages/Login";
 import { RequireAuth } from "../utils/hooks";
 import { PublicAppInfo } from "../pages/PublicAppInfo";
 import { Applications } from "../components/Applications/Applications";
+import { ApplicationUsers } from "../pages/Applications/ApplicationUsers";
 
 const TestRegistration = () => {
     const nav = useNavigate();
@@ -27,6 +28,11 @@ const TestApps = () => {
 const TestApp = () => {
     const nav = useNavigate();
     return <App data={sampleApp} />;
+};
+
+const TestApplicationUsers = () => {
+    const nav = useNavigate();
+    return <ApplicationUsers onBackClick={() => nav("../..")} />;
 };
 
 export const testRoutes: RouteObject[] = [
@@ -68,7 +74,7 @@ export const testRoutes: RouteObject[] = [
                 children: [
                     {
                         path: "",
-                        element: <PublicAppInfo />,
+                        element: <Navigate to="users" />,
                     },
                     {
                         path: "info",
@@ -84,7 +90,7 @@ export const testRoutes: RouteObject[] = [
                     },
                     {
                         path: "users",
-                        element: <Users />,
+                        element: <TestApplicationUsers />,
                     },
                 ],
             },

@@ -5,17 +5,17 @@ import {
     TableHead,
     TextField,
     Typography,
+    Table,
+    Paper,
 } from "@mui/material";
-import { Table, TableRow } from "@mui/material";
-import { Tag } from "../Tag";
-import { Paper } from "@mui/material";
-import { Application } from "../../data/application";
 import { sampleApplications } from "../../sample/applications";
+import { ApplicationRow } from "./ApplicationRow/ApplicationRow";
+import { useNavigate } from "react-router";
 
 interface Props {}
 
 export function ApplicationsContent(props: Props) {
-    const round = { borderRadius: "40px" };
+    const nav = useNavigate();
     const applications = sampleApplications;
     return (
         <div style={{ width: "100%", flex: 1 }}>
@@ -52,25 +52,13 @@ export function ApplicationsContent(props: Props) {
                     </TableHead>
 
                     {applications.map(app => (
-                        <ApplicationRow application={app} />
+                        <ApplicationRow
+                            application={app}
+                            onClick={() => nav("1/users")}
+                        />
                     ))}
                 </Table>
             </Paper>
         </div>
-    );
-}
-
-function ApplicationRow(props: { application: Application }) {
-    const { name, subdomain, created, tags } = props.application;
-    return (
-        <TableRow>
-            <TableCell>{name}</TableCell>
-            <TableCell>{subdomain}</TableCell>
-            <TableCell>{created}</TableCell>
-            <TableCell>
-                {tags[0] && <Tag value={tags[0]} />}{" "}
-                {tags.length > 1 && `+ ${tags.length - 1}`}
-            </TableCell>
-        </TableRow>
     );
 }

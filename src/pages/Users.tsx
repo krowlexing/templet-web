@@ -64,7 +64,7 @@ export function Users() {
                         <SearchWithButton
                             search={search}
                             getLabel={user => user.username}
-                            getKey={user => user.id}
+                            getKey={user => +user.id}
                             onSelect={setSelectedUser}
                             onUnselect={() => setSelectedUser(-1)}
                             onButtonClick={() => {

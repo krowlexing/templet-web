@@ -11,6 +11,7 @@ import { network } from "../network/network";
 import { AppData } from "../data/app";
 import { cancellablePromise } from "../network-helper-lib/cancellable";
 import { SearchWithButton } from "../components/SearchWithButton";
+import { AppSkeleton } from "../components/App/AppSkeleton";
 
 interface Props {
     onClick?: (id: number) => void;
@@ -59,27 +60,14 @@ export function Apps(props: Props) {
     ));
     return (
         <>
-            <TempletHeader button={<Button onClick={open}>New app</Button>} />
-            {/* <SearchWithButton
-                search={cancellableSearch}
-                placeholder="Search apps..."
-                button={
-                    <ContainedIconButton
-                        variant="contained"
-                        sx={{ marginRight: 1 }}
-                    >
-                        <SearchRounded />
-                    </ContainedIconButton>
-                }
-                options={appsData ?? []}
-                getLabel={app => app.title}
-                getKey={app => app.id}
-                onSelect={() => {}}
-                onUnselect={() => {}}
-                onButtonClick={() => {}}
-            /> */}
-            {apps}
-            {modal}
+            <AppSkeleton>
+                <TempletHeader
+                    button={<Button onClick={open}>New app</Button>}
+                />
+
+                {apps}
+                {modal}
+            </AppSkeleton>
         </>
     );
 }

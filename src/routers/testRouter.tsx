@@ -1,5 +1,4 @@
 import { NavLink, RouteObject, useNavigate } from "react-router-dom";
-import { NodesPage } from "../pages";
 import { sampleNodes } from "../sample/nodes";
 import { Registration } from "../pages/Registration";
 import { Apps } from "../pages/Apps";
@@ -13,6 +12,7 @@ import { Users } from "../pages/Users";
 import { Login } from "../pages/Login";
 import { RequireAuth } from "../utils/hooks";
 import { PublicAppInfo } from "../pages/PublicAppInfo";
+import { Applications } from "../components/Applications/Applications";
 
 const TestRegistration = () => {
     const nav = useNavigate();
@@ -45,7 +45,7 @@ export const testRoutes: RouteObject[] = [
     },
     {
         path: "nodes",
-        element: <NodesPage nodes={sampleNodes} />,
+        element: <div>nodes</div>,
     },
     {
         path: "auth",
@@ -61,7 +61,7 @@ export const testRoutes: RouteObject[] = [
         children: [
             {
                 path: "",
-                element: <TestApps />,
+                element: <Applications />,
             },
             {
                 path: ":appId",

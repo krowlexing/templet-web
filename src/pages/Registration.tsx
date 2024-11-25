@@ -29,6 +29,10 @@ export function Registration(props: Props) {
     const navigate = useNavigate();
     const { register, handleSubmit } = useForm<RegistrationForm>();
 
+    if (localStorage.getItem("token") != null) {
+        navigate("../apps");
+    }
+
     const onSubmit = (form: RegistrationForm) => {
         const { name, username, password } = form;
         network

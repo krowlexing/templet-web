@@ -1,8 +1,8 @@
 import { AppData } from "../data/app";
 
 export const sampleApp: AppData = {
-    author: "krowlexing",
-    id: "super id",
+    author_id: 30,
+    id: 123,
     title: "My Super App",
     description: "super description",
     stopped: false,

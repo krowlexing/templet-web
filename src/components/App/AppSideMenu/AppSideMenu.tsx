@@ -27,7 +27,9 @@ export function AppSideMenu(props: Props) {
                         <Text onClick={() => nav("/test/app-apis")}>
                             Application APIs
                         </Text>
-                        <Text>API Clients</Text>
+                        <Text onClick={() => nav("/test/client-apis")}>
+                            API Clients
+                        </Text>
                     </AccordionDetails>
                 </MenuAccordion>
             </MenuBlock>

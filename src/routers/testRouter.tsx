@@ -15,6 +15,8 @@ import { PublicAppInfo } from "../pages/PublicAppInfo";
 import { Applications } from "../components/Applications/Applications";
 import { ApplicationUsers } from "../pages/Applications/ApplicationUsers";
 import { ApplicationApis } from "../pages/Applications/ApplicationAPIs";
+import { ApplicationApiClientRow } from "../components/Applications/ApplicationApiClientRow/ApplicationApiClientRow";
+import { ApplicationApiClients } from "../pages/Applications/ApplicationApiClients";
 
 const TestRegistration = () => {
     const nav = useNavigate();
@@ -66,6 +68,10 @@ export const testRoutes: RouteObject[] = [
     {
         path: "app-apis",
         element: <ApplicationApis />,
+    },
+    {
+        path: "client-apis",
+        element: <ApplicationApiClients />,
     },
     {
         path: "apps",

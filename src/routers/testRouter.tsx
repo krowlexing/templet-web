@@ -14,6 +14,7 @@ import { RequireAuth } from "../utils/hooks";
 import { PublicAppInfo } from "../pages/PublicAppInfo";
 import { Applications } from "../components/Applications/Applications";
 import { ApplicationUsers } from "../pages/Applications/ApplicationUsers";
+import { ApplicationApis } from "../pages/Applications/ApplicationAPIs";
 
 const TestRegistration = () => {
     const nav = useNavigate();
@@ -62,6 +63,10 @@ export const testRoutes: RouteObject[] = [
         element: <Login />,
     },
 
+    {
+        path: "app-apis",
+        element: <ApplicationApis />,
+    },
     {
         path: "apps",
         children: [

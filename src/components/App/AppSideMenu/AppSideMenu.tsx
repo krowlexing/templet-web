@@ -1,10 +1,12 @@
 import { AccordionDetails, AccordionSummary, Typography } from "@mui/material";
 import { Container, MenuAccordion, MenuBlock, WhiteDivider } from "./styles";
 import styled from "@emotion/styled";
+import { useNavigate } from "react-router";
 
 interface Props {}
 
 export function AppSideMenu(props: Props) {
+    const nav = useNavigate();
     return (
         <Container>
             <MenuBlock>
@@ -19,8 +21,12 @@ export function AppSideMenu(props: Props) {
                     <AccordionDetails
                         sx={{ padding: 0, marginBottom: 0, marginTop: -1 }}
                     >
-                        <Text>Applications</Text>
-                        <Text>Application APIs</Text>
+                        <Text onClick={() => nav("/test/apps")}>
+                            Applications
+                        </Text>
+                        <Text onClick={() => nav("/test/app-apis")}>
+                            Application APIs
+                        </Text>
                         <Text>API Clients</Text>
                     </AccordionDetails>
                 </MenuAccordion>

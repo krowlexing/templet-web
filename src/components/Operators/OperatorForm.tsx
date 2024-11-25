@@ -54,7 +54,7 @@ export function OperatorForm() {
                         if (value == null || typeof value == "string") {
                             setSelectedUser(-1);
                         } else {
-                            setSelectedUser(value.id);
+                            setSelectedUser(+value.id);
                         }
                     } else {
                         setSelectedUser(-1);

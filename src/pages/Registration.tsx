@@ -9,7 +9,7 @@ import {
 import styled from "@emotion/styled";
 import { useForm } from "react-hook-form";
 import { network } from "../network/network";
-import { ForwardedRef, forwardRef } from "react";
+import { ForwardedRef, forwardRef, useEffect } from "react";
 
 import { useNavigate } from "react-router";
 
@@ -29,9 +29,12 @@ export function Registration(props: Props) {
     const navigate = useNavigate();
     const { register, handleSubmit } = useForm<RegistrationForm>();
 
-    if (localStorage.getItem("token") != null) {
-        navigate("../apps");
-    }
+    useEffect(() => {
+        if (localStorage.getItem("token") != null) {
+            console.log("already logged in");
+            navigate("/test/apps");
+        }
+    }, []);
 
     const onSubmit = (form: RegistrationForm) => {
         const { name, username, password } = form;

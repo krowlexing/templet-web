@@ -9,18 +9,14 @@ interface Props {
 }
 
 export function Broker(props: Props) {
-    const { active, stopped, owner, name } = props.broker;
-
     const indicator = (b: boolean) => <Switch checked={b} />;
 
     return (
         <Container>
+            <div>name - owner</div>
             <div>
-                {name} - {owner}
-            </div>
-            <div>
-                <div>Active: {indicator(active)}</div>
-                <div>Stopped: {indicator(stopped)}</div>
+                <div>Active: {indicator(false)}</div>
+                <div>Stopped: {indicator(false)}</div>
             </div>
         </Container>
     );

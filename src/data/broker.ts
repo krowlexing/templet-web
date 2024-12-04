@@ -5,13 +5,8 @@ export type BrokerInfo = {
 
 export type Broker = {
     name: string;
-    owner: string;
-    description: string;
-
-    token: string;
-
-    version: string;
-
-    stopped: boolean;
-    active: boolean;
+    id: string;
+    permissions: string[];
+    created: string;
+    tags: string[];
 };

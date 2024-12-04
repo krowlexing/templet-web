@@ -6,13 +6,14 @@ import {
     TableCell,
     TableHead,
 } from "@mui/material";
-import { AppSkeleton } from "../../components/App/AppSkeleton";
+import { AppSkeleton } from "../../../components/App/AppSkeleton";
 import { ArrowBack } from "@mui/icons-material";
 import { Typography as Text } from "@mui/material";
-import { Column, Row, Txt } from "../../components/CommonComponents";
-import { ApplicationMenu } from "../../components/Applications/ApplicationMenu/ApplicationMenu";
-import { sampleUsers } from "../../sample/users";
-import { UserRow } from "../../components/Applications/UserRow/UserRow";
+import { Column, Row, Txt } from "../../../components/CommonComponents";
+import { ApplicationMenu } from "../../../components/Applications/ApplicationMenu/ApplicationMenu";
+import { sampleUsers } from "../../../sample/users";
+import { UserRow } from "../../../components/Applications/UserRow/UserRow";
+import { useNavigate } from "react-router";
 
 type Props = {
     onBackClick: () => void;
@@ -24,6 +25,7 @@ export function ApplicationUsers(props: Props) {
     const applicationName = "Sequence Generator";
     const users = sampleUsers;
     const tableHead = ["Name", "Email", "Id", "Added", "Tags"];
+    const nav = useNavigate();
 
     return (
         <AppSkeleton>
@@ -40,7 +42,10 @@ export function ApplicationUsers(props: Props) {
                 </Row>
                 <Divider />
                 <Row marginTop={3}>
-                    <ApplicationMenu selected="Users" />
+                    <ApplicationMenu
+                        selected="Users"
+                        onClick={route => nav(`../${route}`)}
+                    />
                     <Table component={Paper}>
                         <TableHead>
                             {tableHead.map(head => (

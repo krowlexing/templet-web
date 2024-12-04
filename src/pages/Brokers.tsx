@@ -40,7 +40,7 @@ export function Brokers() {
     }, [appId]);
 
     if (brokers == undefined) {
-        return ":(";
+        return <div>":("</div>;
     }
 
     return (

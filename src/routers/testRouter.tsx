@@ -13,10 +13,12 @@ import { Login } from "../pages/Login";
 import { RequireAuth } from "../utils/hooks";
 import { PublicAppInfo } from "../pages/PublicAppInfo";
 import { Applications } from "../components/Applications/Applications";
-import { ApplicationUsers } from "../pages/Applications/ApplicationUsers";
+import { ApplicationUsers } from "../pages/Applications/Application/ApplicationUsers";
 import { ApplicationApis } from "../pages/Applications/ApplicationAPIs";
 import { ApplicationApiClientRow } from "../components/Applications/ApplicationApiClientRow/ApplicationApiClientRow";
 import { ApplicationApiClients } from "../pages/Applications/ApplicationApiClients";
+import { ApplicationBrokers } from "../pages/Applications/Application/ApplicationBrokers";
+import { BrokerInfo } from "../pages/Applications/Broker/BrokerInfo";
 
 const TestRegistration = () => {
     const nav = useNavigate();
@@ -36,6 +38,14 @@ const TestApp = () => {
 const TestApplicationUsers = () => {
     const nav = useNavigate();
     return <ApplicationUsers onBackClick={() => nav("../..")} />;
+};
+
+const WithBackClick = (props: {
+    Element: (props: { onBackClick: () => void }) => JSX.Element;
+}) => {
+    const { Element } = props;
+    const nav = useNavigate();
+    return <Element onBackClick={() => nav("../..")} />;
 };
 
 export const testRoutes: RouteObject[] = [
@@ -97,7 +107,20 @@ export const testRoutes: RouteObject[] = [
                     },
                     {
                         path: "brokers",
-                        element: <Brokers />,
+                        children: [
+                            {
+                                path: "",
+                                element: (
+                                    <WithBackClick
+                                        Element={ApplicationBrokers}
+                                    />
+                                ),
+                            },
+                            {
+                                path: ":brokerId",
+                                element: <BrokerInfo />,
+                            },
+                        ],
                     },
                     {
                         path: "users",
